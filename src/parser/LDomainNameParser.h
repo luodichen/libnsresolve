@@ -8,6 +8,10 @@
 #ifndef SRC_PARSER_LDOMAINNAMEPARSER_H_
 #define SRC_PARSER_LDOMAINNAMEPARSER_H_
 
+#include <stdint.h>
+#include <vector>
+#include <string>
+
 class LDomainNameParser
 {
 public:
@@ -26,7 +30,7 @@ private:
 
 private:
     int m_nSubLen;
-    std::vector<uint8_t> &m_vBuffer;
+    const std::vector<uint8_t> &m_vBuffer;
     std::string m_strDomainName;
 };
 

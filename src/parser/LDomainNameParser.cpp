@@ -7,9 +7,7 @@
 
 #include "../common/errcode.h"
 #include "LDomainNameParser.h"
-#include <stdlib.h>
 #include <assert.h>
-#include <vector>
 
 #define PTRMASK (0xc0)
 #define ISPTR(w) (((w) & PTRMASK) == PTRMASK)
