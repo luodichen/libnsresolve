@@ -9,6 +9,7 @@
 #define SRC_PARSER_LRESOURCERECORD_H_
 
 #include <string>
+#include <stdint.h>
 
 class LResourceRecord
 {
@@ -21,7 +22,7 @@ protected:
 	uint16_t m_sType;
 	uint16_t m_sClass;
 	uint32_t m_nTTL;
-	uint8_t m_pRecordBuffer;
+	uint8_t *m_pRecordBuffer;
 };
 
 #endif /* SRC_PARSER_LRESOURCERECORD_H_ */

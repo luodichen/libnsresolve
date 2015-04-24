@@ -9,6 +9,7 @@
 #define SRC_PARSER_LDNSPARSER_H_
 
 #include "DNSHeader.h"
+#include <stdint.h>
 
 class LDNSParser
 {

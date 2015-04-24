@@ -17,3 +17,8 @@ LDNSParser::~LDNSParser()
 {
 
 }
+
+void LDNSParser::StreamInput(const uint8_t *pBuffer, int nSize)
+{
+    
+}
