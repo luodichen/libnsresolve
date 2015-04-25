@@ -20,6 +20,7 @@ public:
 
 public:
     int StreamInput(uint8_t word);
+    std::string GetDomainName();
 
 private:
     enum STATUS {
