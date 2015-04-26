@@ -36,6 +36,13 @@ private:
     {
         uint16_t sType;
         uint16_t sClass;
+
+        HEADER()
+            : sType(0)
+            , sClass(0)
+        {
+
+        }
     } m_header;
 #pragma pack()
 
