@@ -79,10 +79,35 @@ int LResourceRecord::StringInput(uint8_t word)
         break;
 
     case STOPED:
-
+        return ERR::HIT_THE_END_OF_RESOURCE_RECORD;
         break;
     }
 
     return STOPED == m_status ? 0 : 1;
+}
+
+uint16_t LResourceRecord::GetType()
+{
+    return m_sType;
+}
+
+uint16_t LResourceRecord::GetClass()
+{
+    return m_sClass;
+}
+
+uint32_t LResourceRecord::GetTTL()
+{
+    return m_nTTL;
+}
+
+const uint8_t *LResourceRecord::GetBuffer(size_t *pSize)
+{
+    if (NULL != pSize)
+    {
+        *pSize = m_sRecordLength;
+    }
+
+    return m_pRecordBuffer;
 }
 
