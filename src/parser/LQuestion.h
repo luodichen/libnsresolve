@@ -25,6 +25,7 @@ public:
 
 public:
     int StreamInput(uint8_t word);
+    int MakeBuffer(uint8_t *pBuffer, size_t *pSize);
 
 private:
     std::string m_strDomainName;

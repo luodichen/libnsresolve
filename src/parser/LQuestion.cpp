@@ -6,6 +6,7 @@
  */
 
 #include "LQuestion.h"
+#include <string.h>
 
 LQuestion::LQuestion(const std::vector<uint8_t> &vBuffer)
     : m_strDomainName("")
@@ -68,3 +69,52 @@ int LQuestion::StreamInput(uint8_t word)
 
     return STOPED == m_status ? 0 : 1;
 }
+
+int LQuestion::MakeBuffer(uint8_t *pBuffer, size_t *pSize)
+{
+    int ret = ERR::NOERROR;
+    if (NULL == pSize)
+    {
+        ret = ERR::INVALID_PARAM;
+    }
+    else if (*pSize < m_strDomainName.length() + sizeof(m_header) + 2)
+    {
+        *pSize = m_strDomainName.length() + sizeof(m_header) + 2;
+        ret = ERR::NEED_LARGER_BUF;
+    }
+    else if (NULL == pBuffer)
+    {
+        ret = ERR::INVALID_PARAM;
+    }
+    else
+    {
+        int nPartLen = 0;
+        int nCur = 0;
+        int nDomainNameLen = m_strDomainName.length();
+        pBuffer[nCur++] = 0;
+
+        for (int i = 0; i < nDomainNameLen; i++)
+        {
+            uint8_t word = m_strDomainName[i];
+            if ('.' == word)
+            {
+                pBuffer[nCur] = 0;
+                pBuffer[nCur - nPartLen - 1] = nPartLen;
+                nCur++;
+                nPartLen = 0;
+            }
+            else
+            {
+                pBuffer[nCur++] = word;
+                nPartLen++;
+            }
+        }
+
+        pBuffer[nCur - nPartLen - 1] = nPartLen;
+        pBuffer[nCur++] = 0;
+
+        memcpy((void*)(pBuffer + nCur), (void*)&m_header, sizeof(m_header));
+    }
+    return ret;
+}
+
