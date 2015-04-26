@@ -21,7 +21,7 @@ public:
 	virtual ~LResourceRecord();
 
 public:
-	int StringInput(uint8_t word);
+	int StreamInput(uint8_t word);
 	uint16_t GetType();
 	uint16_t GetClass();
 	uint32_t GetTTL();

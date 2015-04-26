@@ -33,7 +33,7 @@ LResourceRecord::~LResourceRecord()
     }
 }
 
-int LResourceRecord::StringInput(uint8_t word)
+int LResourceRecord::StreamInput(uint8_t word)
 {
     int result = 0;
     switch (m_status)
