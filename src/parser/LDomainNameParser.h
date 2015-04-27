@@ -21,6 +21,10 @@ public:
 public:
     int StreamInput(uint8_t word);
     std::string GetDomainName();
+    
+private:
+    LDomainNameParser(const LDomainNameParser &);
+    LDomainNameParser &operator=(const LDomainNameParser &);
 
 private:
     enum STATUS {

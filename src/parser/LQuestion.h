@@ -22,6 +22,10 @@ public:
     LQuestion(const std::vector<uint8_t> &vBuffer);
     LQuestion(const char *szDomainName, uint16_t sType, uint16_t sClass);
     virtual ~LQuestion();
+    
+private:
+    LQuestion(const LQuestion &);
+    LQuestion &operator=(const LQuestion &);
 
 public:
     int StreamInput(uint8_t word);

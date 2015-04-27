@@ -26,6 +26,10 @@ public:
 	uint16_t GetClass();
 	uint32_t GetTTL();
 	const uint8_t *GetBuffer(size_t *pSize);
+	
+private:
+	LResourceRecord(const LResourceRecord &);
+	LResourceRecord &operator=(const LResourceRecord &);
 
 protected:
 	std::string m_strDomainName;

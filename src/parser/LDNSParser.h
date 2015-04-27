@@ -21,6 +21,10 @@ public:
 public:
     void StreamInput(const uint8_t *pBuffer, int nSize);
     void StreamInput(uint8_t word);
+    
+private:
+    LDNSParser(const LDNSParser &);
+    LDNSParser &operator=(const LDNSParser &);
 
 private:
     DNSHEADER m_header;
