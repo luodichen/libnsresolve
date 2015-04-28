@@ -29,12 +29,14 @@ private:
 private:
     enum STATUS {
         WAIT_LENGTH = 0,
-        WAIT_WORDS = 1,
-        STOPED = 2
+        WAIT_PTR = 1,
+        WAIT_WORDS = 2,
+        STOPED = 3
     } m_status;
 
 private:
     int m_nSubLen;
+    uint16_t m_ptr;
     const std::vector<uint8_t> &m_vBuffer;
     std::string m_strDomainName;
 };

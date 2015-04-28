@@ -18,6 +18,7 @@ static const int MAX_SUB_LEN = 63;
 LDomainNameParser::LDomainNameParser(const std::vector<uint8_t> &vBuffer)
     : m_status(WAIT_LENGTH)
     , m_nSubLen(0)
+    , m_ptr(0)
     , m_vBuffer(vBuffer)
     , m_strDomainName("")
 {
@@ -38,11 +39,8 @@ int LDomainNameParser::StreamInput(uint8_t word)
                 ERR::DOMAIN_NAME_FORMAT_INCORRECT);
         if (ISPTR(word))
         {
-            int nPtr = GETPTR(word);
-            int nResult = 0;
-            while ((nResult = StreamInput(m_vBuffer[nPtr++])) > 0)
-                ;
-            CHKERR(nResult >= 0, nResult);
+            m_ptr = GETPTR(word) << 8;
+            m_status = WAIT_PTR;
         }
         else if (word > 0)
         {
@@ -53,6 +51,18 @@ int LDomainNameParser::StreamInput(uint8_t word)
         {
             m_status = STOPED;
         }
+        break;
+        
+    case WAIT_PTR:
+        m_ptr += word;
+        int nPtr = m_ptr;
+        m_ptr = 0;
+        int nResult = 0;
+        m_status = WAIT_LENGTH;
+        
+        while ((nResult = StreamInput(m_vBuffer[nPtr++])) > 0)
+            ;
+        CHKERR(nResult >= 0, nResult);
         break;
 
     case WAIT_WORDS:
