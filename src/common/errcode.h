@@ -26,6 +26,11 @@ namespace ERR
     static const int INVALID_PARAM                  = -106;
     static const int NO_MORE_WORDS                  = -107;
     static const int TOO_MUCH_RESOURCE_RECORDS      = -108;
+    static const int SOCKET_CONNECT_FAILED          = -109;
+    static const int SEND_DATA_FAILED               = -110;
+    static const int NOT_CONNECTED                  = -111;
+    static const int RECV_FAILED                    = -112;
+    static const int RECV_TIMEOUT                   = -113;
 }
 
 #endif /* SRC_COMMON_ERRCODE_H_ */
