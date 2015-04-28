@@ -101,7 +101,7 @@ uint32_t LResourceRecord::GetTTL()
     return m_nTTL;
 }
 
-const uint8_t *LResourceRecord::GetBuffer(size_t *pSize)
+const uint8_t *LResourceRecord::GetBuffer(size_t *pSize) const 
 {
     if (NULL != pSize)
     {
@@ -109,5 +109,10 @@ const uint8_t *LResourceRecord::GetBuffer(size_t *pSize)
     }
 
     return m_pRecordBuffer;
+}
+
+std::string LResourceRecord::GetDomainName() const
+{
+    return m_strDomainName;
 }
 

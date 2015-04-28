@@ -25,7 +25,8 @@ public:
 	uint16_t GetType();
 	uint16_t GetClass();
 	uint32_t GetTTL();
-	const uint8_t *GetBuffer(size_t *pSize);
+	const uint8_t *GetBuffer(size_t *pSize) const;
+	std::string GetDomainName() const;
 	
 private:
 	LResourceRecord(const LResourceRecord &);

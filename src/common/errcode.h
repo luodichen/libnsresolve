@@ -24,6 +24,8 @@ namespace ERR
     static const int HIT_THE_END_OF_QUESTION        = -104;
     static const int NEED_LARGER_BUF                = -105;
     static const int INVALID_PARAM                  = -106;
+    static const int NO_MORE_WORDS                  = -107;
+    static const int TOO_MUCH_RESOURCE_RECORDS      = -108;
 }
 
 #endif /* SRC_COMMON_ERRCODE_H_ */
