@@ -167,9 +167,24 @@ void LDNSParser::ReadHeader()
 
 std::vector<const LResourceRecord *> LDNSParser::GetAnswers()
 {
+    return GetResources(m_vAnswerRRs);
+}
+
+std::vector<const LResourceRecord *> LDNSParser::GetAuthoritys()
+{
+    return GetResources(m_vAuthorityRRs);
+}
+
+std::vector<const LResourceRecord *> LDNSParser::GetAdditionals()
+{
+    return GetResources(m_vAdditionalRRs);
+}
+
+std::vector<const LResourceRecord *> LDNSParser::GetResources(std::vector<LResourceRecord *> &v)
+{
     std::vector<const LResourceRecord *> ret;
-    std::vector<LResourceRecord *>::iterator iter = m_vAnswerRRs.begin();
-    for (; iter != m_vAnswerRRs.end(); iter++)
+    std::vector<LResourceRecord *>::iterator iter = v.begin();
+    for (; iter != v.end(); iter++)
     {
         ret.push_back(*iter);
     }

@@ -25,6 +25,8 @@ public:
     int StreamInput(const uint8_t *pBuffer, int nSize);
     int StreamInput(uint8_t word);
     std::vector<const LResourceRecord *> GetAnswers();
+    std::vector<const LResourceRecord *> GetAuthoritys();
+    std::vector<const LResourceRecord *> GetAdditionals();
     
 private:
     LDNSParser(const LDNSParser &);
@@ -34,6 +36,7 @@ private:
     void ClearRecords(std::vector<LResourceRecord *> &);
     void SetError(int errcode);
     void ReadHeader();
+    std::vector<const LResourceRecord *> GetResources(std::vector<LResourceRecord *> &);
 
 private:
     DNSHEADER m_header;
