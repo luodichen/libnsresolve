@@ -32,6 +32,8 @@ LDomainNameParser::~LDomainNameParser()
 
 int LDomainNameParser::StreamInput(uint8_t word)
 {
+    int nPtr = 0;
+    int nResult = 0;
     switch (m_status)
     {
     case WAIT_LENGTH:
@@ -55,9 +57,9 @@ int LDomainNameParser::StreamInput(uint8_t word)
         
     case WAIT_PTR:
         m_ptr += word;
-        int nPtr = m_ptr;
+        nPtr = m_ptr;
         m_ptr = 0;
-        int nResult = 0;
+        nResult = 0;
         m_status = WAIT_LENGTH;
         
         while ((nResult = StreamInput(m_vBuffer[nPtr++])) > 0)
