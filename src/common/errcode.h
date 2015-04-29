@@ -31,6 +31,8 @@ namespace ERR
     static const int NOT_CONNECTED                  = -111;
     static const int RECV_FAILED                    = -112;
     static const int RECV_TIMEOUT                   = -113;
+    static const int DOMAIN_NAME_INCORRECT          = -114;
+    static const int DOMAIN_NAME_TOO_LONG           = -115;
 }
 
 #endif /* SRC_COMMON_ERRCODE_H_ */

@@ -9,7 +9,7 @@
 #define SRC_PARSER_LDNSPARSER_H_
 
 #include "../common/errcode.h"
-#include "DNSHeader.h"
+#include "../common/DNSHeader.h"
 #include "LResourceRecord.h"
 #include "LQuestion.h"
 #include <stdint.h>
