@@ -6,7 +6,9 @@
  */
 
 #include "LResourceRecord.h"
+#include "../common/constants.h"
 #include <arpa/inet.h>
+#include <string.h>
 
 LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
     : m_strDomainName("")
@@ -18,6 +20,7 @@ LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
     , m_header()
     , m_status(PARSING_DOMAIN_NAME)
     , m_dnp(vBuffer)
+    , m_dnpRecord(vBuffer)
     , m_pHeaderCur((uint8_t*)&m_header)
     , m_sBytesReaded(0)
 {
@@ -60,7 +63,9 @@ int LResourceRecord::StreamInput(uint8_t word)
 
             if (m_sRecordLength > 0)
             {
-                m_pRecordBuffer = new uint8_t[m_sRecordLength];
+                if (QTYPE::CNAME != m_sType)
+                    m_pRecordBuffer = new uint8_t[m_sRecordLength];
+
                 m_status =  READING_DATA;
             }
             else
@@ -71,10 +76,25 @@ int LResourceRecord::StreamInput(uint8_t word)
         break;
 
     case READING_DATA:
-        m_pRecordBuffer[m_sBytesReaded++] = word;
-        if (m_sBytesReaded == m_sRecordLength)
+        if (QTYPE::CNAME != m_sType)
+            m_pRecordBuffer[m_sBytesReaded] = word;
+        else
+            m_dnpRecord.StreamInput(word);
+
+        if (++m_sBytesReaded == m_sRecordLength)
         {
             m_status = STOPED;
+
+            if (QTYPE::CNAME == m_sType)
+            {
+                std::string strDomainNameData = m_dnpRecord.GetDomainName();
+                m_sRecordLength = strDomainNameData.length();
+                m_pRecordBuffer = new uint8_t[m_sRecordLength + 1];
+
+                memcpy((void *)m_pRecordBuffer,
+                        (const void *)strDomainNameData.c_str(), m_sRecordLength);
+                m_pRecordBuffer[m_sRecordLength] = '\0';
+            }
         }
         break;
 

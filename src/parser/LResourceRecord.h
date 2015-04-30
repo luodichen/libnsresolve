@@ -70,6 +70,7 @@ private:
 	} m_status;
 
 	LDomainNameParser m_dnp;
+	LDomainNameParser m_dnpRecord;
 	uint8_t *m_pHeaderCur;
 	uint16_t m_sBytesReaded;
 };
