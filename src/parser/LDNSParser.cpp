@@ -165,25 +165,25 @@ void LDNSParser::ReadHeader()
     m_sAdditional = ntohs(m_header.wAdditionalRRs);
 }
 
-std::vector<const LResourceRecord *> LDNSParser::GetAnswers()
+std::vector<const LResourceRecord *> LDNSParser::GetAnswers() const
 {
     return GetResources(m_vAnswerRRs);
 }
 
-std::vector<const LResourceRecord *> LDNSParser::GetAuthoritys()
+std::vector<const LResourceRecord *> LDNSParser::GetAuthoritys() const
 {
     return GetResources(m_vAuthorityRRs);
 }
 
-std::vector<const LResourceRecord *> LDNSParser::GetAdditionals()
+std::vector<const LResourceRecord *> LDNSParser::GetAdditionals() const
 {
     return GetResources(m_vAdditionalRRs);
 }
 
-std::vector<const LResourceRecord *> LDNSParser::GetResources(std::vector<LResourceRecord *> &v)
+std::vector<const LResourceRecord *> LDNSParser::GetResources(const std::vector<LResourceRecord *> &v) const
 {
     std::vector<const LResourceRecord *> ret;
-    std::vector<LResourceRecord *>::iterator iter = v.begin();
+    std::vector<LResourceRecord *>::const_iterator iter = v.begin();
     for (; iter != v.end(); iter++)
     {
         ret.push_back(*iter);

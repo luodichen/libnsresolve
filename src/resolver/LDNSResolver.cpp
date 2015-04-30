@@ -15,6 +15,7 @@
 LDNSResolver::LDNSResolver(in_addr_t address, uint32_t timeout)
     : m_address(address)
     , m_timeout(timeout)
+    , m_pParser(NULL)
 {
 
 }
@@ -22,21 +23,26 @@ LDNSResolver::LDNSResolver(in_addr_t address, uint32_t timeout)
 LDNSResolver::LDNSResolver(const char *szAddress, uint32_t timeout)
     : m_address(inet_addr(szAddress))
     , m_timeout(timeout)
+    , m_pParser(NULL)
 {
 
 }
 
 LDNSResolver::~LDNSResolver()
 {
-
+    Cleanup();
 }
 
 const static size_t MAX_BUF_SIZE = 2048;
 int LDNSResolver::Query(const char *szName, uint16_t sType)
 {
+    Cleanup();
+    
     int ret = 0;
     LClient client(m_address, 53, LClient::UDP, m_timeout);
-    LDNSParser parser;
+    LDNSParser *pParser = new LDNSParser();
+    m_pParser = pParser;
+    
     DNSHEADER header;
     HEADER_FLAG flag;
 
@@ -90,19 +96,26 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
         return ret;
     }
 
-    result = parser.StreamInput(recvbuf, result);
+    result = pParser->StreamInput(recvbuf, result);
     if (ERR::NOERROR != result)
     {
         ret = result;
         return ret;
     }
 
-    printf("%s:", parser.GetAnswers()[0]->GetDomainName().c_str());
-
-    uint8_t ip[4];
-    size_t size = 0;
-    memcpy(ip, parser.GetAnswers()[0]->GetBuffer(&size), sizeof(ip));
-    printf("%u.%u.%u.%u\n", ip[0], ip[1], ip[2], ip[3]);
-
     return ret;
+}
+
+const LDNSParser *LDNSResolver::GetParser()
+{
+    return m_pParser;
+}
+
+void LDNSResolver::Cleanup()
+{
+    if (NULL != m_pParser)
+    {
+        delete m_pParser;
+        m_pParser = NULL;
+    }
 }

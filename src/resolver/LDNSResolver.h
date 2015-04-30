@@ -22,10 +22,15 @@ public:
 
 public:
     int Query(const char *szName, uint16_t sType);
+    const LDNSParser *GetParser();
+    
+private:
+    void Cleanup();
 
 private:
     in_addr_t m_address;
     uint32_t m_timeout;
+    const LDNSParser *m_pParser;
 };
 
 #endif /* SRC_RESOLVER_LDNSRESOLVER_H_ */
