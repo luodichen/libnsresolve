@@ -86,17 +86,17 @@ int LResourceRecord::StreamInput(uint8_t word)
     return STOPED == m_status ? 0 : 1;
 }
 
-uint16_t LResourceRecord::GetType()
+uint16_t LResourceRecord::GetType() const
 {
     return m_sType;
 }
 
-uint16_t LResourceRecord::GetClass()
+uint16_t LResourceRecord::GetClass() const
 {
     return m_sClass;
 }
 
-uint32_t LResourceRecord::GetTTL()
+uint32_t LResourceRecord::GetTTL() const
 {
     return m_nTTL;
 }
@@ -116,3 +116,7 @@ std::string LResourceRecord::GetDomainName() const
     return m_strDomainName;
 }
 
+size_t LResourceRecord::GetBufferSize() const
+{
+    return m_sRecordLength;
+}

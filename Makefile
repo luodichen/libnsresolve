@@ -8,6 +8,7 @@ export TARGET = $(BIN)/libnsresolve.so
 subdirs = 	src/net \
 			src/parser \
 			src/resolver \
+			src/export \
 			bin
 			
 .PHONY: all

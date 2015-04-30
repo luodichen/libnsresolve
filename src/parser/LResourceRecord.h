@@ -22,11 +22,12 @@ public:
 
 public:
 	int StreamInput(uint8_t word);
-	uint16_t GetType();
-	uint16_t GetClass();
-	uint32_t GetTTL();
+	uint16_t GetType() const;
+	uint16_t GetClass() const;
+	uint32_t GetTTL() const;
 	const uint8_t *GetBuffer(size_t *pSize) const;
 	std::string GetDomainName() const;
+	size_t GetBufferSize() const;
 	
 private:
 	LResourceRecord(const LResourceRecord &);
