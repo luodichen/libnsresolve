@@ -6,7 +6,10 @@
  */
 
 #include "MXRecord.h"
+#include "../common/constants.h"
 #include <arpa/inet.h>
+
+const uint16_t MXRecord::TYPE = QTYPE::MX;
 
 MXRecord::MXRecord(size_t size, const std::vector<uint8_t> &vBuffer)
     : BaseRecord(size)
@@ -15,7 +18,7 @@ MXRecord::MXRecord(size_t size, const std::vector<uint8_t> &vBuffer)
     , m_sPreference(0)
     , m_pWrite((uint8_t *)&m_sPreference)
 {
-
+    m_sType = TYPE;
 }
 
 MXRecord::~MXRecord()
@@ -58,4 +61,9 @@ std::string MXRecord::GetDomainName() const
 size_t MXRecord::GetDataLength() const
 {
     return GetDomainName().length() + sizeof(m_sPreference) + 1;
+}
+
+uint16_t MXRecord::GetPreference() const
+{
+    return m_sPreference;
 }

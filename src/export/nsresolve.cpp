@@ -9,7 +9,8 @@
 
 static size_t record_size(const LResourceRecord *pRecord)
 {
-    return sizeof(NSRESRECORD) + pRecord->GetBufferSize() + pRecord->GetDomainName().length() + 1;
+    // TODO:::::::::
+    return sizeof(NSRESRECORD) + pRecord->GetBufferSize() + pRecord->GetDomainName().length() + 1 + 128;
 }
 
 static size_t record_set_size(std::vector<const LResourceRecord *> &set)
@@ -23,6 +24,70 @@ static size_t record_set_size(std::vector<const LResourceRecord *> &set)
     }
 
     return ret;
+}
+
+static uint8_t *fill_res_data(uint8_t *pCur, const LResourceRecord *pResourceRecord)
+{
+    const BaseRecord *pBaseRecord = pResourceRecord->GetRecord();
+    switch (pBaseRecord->GetType())
+    {
+    case QTYPE::A: {
+        ARecord *pRecord = (ARecord *)pBaseRecord;
+        PNSRARECORD pTarget = (PNSRARECORD)pCur;
+        pTarget->address = pRecord->GetIPAddress();
+
+        pCur += sizeof(*pTarget);
+        break;
+    }
+    case QTYPE::MX: {
+        MXRecord *pRecord = (MXRecord *)pBaseRecord;
+        PNSRMXRECORD pTarget = (PNSRMXRECORD)pCur;
+        pTarget->sPreference = pRecord->GetPreference();
+
+        pCur += sizeof(*pTarget);
+        pTarget->szDomainName = (const char *)pCur;
+
+        std::string strDomainName = pRecord->GetDomainName();
+        memcpy((void *)pCur, (void *)strDomainName.c_str(), strDomainName.length());
+        pCur += strDomainName.length();
+
+        *(pCur++) = '\0';
+
+        break;
+    }
+
+    case QTYPE::NS: {
+        NSRecord *pRecord = (NSRecord *)pBaseRecord;
+        PNSRNSRECORD pTarget = (PNSRNSRECORD)pCur;
+
+        pCur += sizeof(*pTarget);
+
+        pTarget->szDomainName = (const char *)pCur;
+        std::string strDomainName = pRecord->GetDomainName();
+        memcpy((void *)pCur, (void *)strDomainName.c_str(), strDomainName.length());
+        pCur += strDomainName.length();
+
+        *(pCur++) = '\0';
+
+        break;
+    }
+
+    default: {
+        BaseRecord *pRecord = (BaseRecord *)pBaseRecord;
+        PNSRBASERECORD pTarget = (PNSRBASERECORD)pCur;
+
+        pTarget->nRawDataLen = pRecord->GetRawDataLength();
+        pCur += sizeof(*pTarget);
+
+        pTarget->pRawData = (uint8_t *)pCur;
+        memcpy((void *)pCur, (void *)pRecord->GetRawData(), pRecord->GetRawDataLength());
+        pCur += pRecord->GetRawDataLength();
+
+        break;
+    }
+    }
+
+    return pCur;
 }
 
 static uint8_t *fill_result_buf(uint8_t *pCur, const NSRESRECORD **ppRecord,
@@ -50,10 +115,12 @@ static uint8_t *fill_result_buf(uint8_t *pCur, const NSRESRECORD **ppRecord,
         *(pCur++) = '\0';
 
         pRecord->pResData = pCur;
+        /*
         size_t nResLen = (*iter)->GetBufferSize();
         memcpy((void *)pCur, (*iter)->GetBuffer(NULL), nResLen);
         pCur += nResLen;
-
+        */
+        pCur = fill_res_data(pCur, *iter);
         i++;
     }
     ppRecord[i] = NULL;
@@ -102,13 +169,6 @@ int resolve(const char *szName, uint16_t sType, in_addr_t server, NSRRESULT **pR
 
     return 0;
 }
-
-/*
-int resolve(const char *szName, uint16_t sType, const char *szServer, NSRRESULT **pResult, time_t timeout)
-{
-    return resolve(szName, inet_addr(szServer), pResult, timeout);
-}
-*/
 
 void release(NSRRESULT *pResult)
 {

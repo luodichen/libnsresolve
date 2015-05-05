@@ -6,6 +6,9 @@
  */
 
 #include "NSRecord.h"
+#include "../common/constants.h"
+
+const uint16_t NSRecord::TYPE = QTYPE::NS;
 
 NSRecord::NSRecord(size_t size, const std::vector<uint8_t> &vBuffer)
     : BaseRecord(size)

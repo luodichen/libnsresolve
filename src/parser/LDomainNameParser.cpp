@@ -86,7 +86,7 @@ int LDomainNameParser::StreamInput(uint8_t word)
     return STOPED == m_status ? 0 : 1;
 }
 
-std::string LDomainNameParser::GetDomainName()
+std::string LDomainNameParser::GetDomainName() const
 {
     return m_strDomainName;
 }

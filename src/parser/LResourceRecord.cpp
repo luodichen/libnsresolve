@@ -15,24 +15,33 @@ LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
     , m_sType(0)
     , m_sClass(0)
     , m_nTTL(0)
-    , m_pRecordBuffer(NULL)
+    //, m_pRecordBuffer(NULL)
     , m_sRecordLength(0)
+    , m_pRecord(NULL)
     , m_header()
     , m_status(PARSING_DOMAIN_NAME)
     , m_dnp(vBuffer)
-    , m_dnpRecord(vBuffer)
+    //, m_dnpRecord(vBuffer)
     , m_pHeaderCur((uint8_t*)&m_header)
-    , m_sBytesReaded(0)
+    //, m_sBytesReaded(0)
+    , m_vBuffer(vBuffer)
 {
 
 }
 
 LResourceRecord::~LResourceRecord()
 {
+    /*
     if (NULL != m_pRecordBuffer)
     {
         delete [] m_pRecordBuffer;
         m_pRecordBuffer = NULL;
+    }
+    */
+    if (NULL != m_pRecord)
+    {
+        delete m_pRecord;
+        m_pRecord = NULL;
     }
 }
 
@@ -63,8 +72,8 @@ int LResourceRecord::StreamInput(uint8_t word)
 
             if (m_sRecordLength > 0)
             {
-                if (QTYPE::CNAME != m_sType)
-                    m_pRecordBuffer = new uint8_t[m_sRecordLength];
+                //if (QTYPE::A == m_sType)
+                //    m_pRecordBuffer = new uint8_t[m_sRecordLength];
 
                 m_status =  READING_DATA;
             }
@@ -76,25 +85,19 @@ int LResourceRecord::StreamInput(uint8_t word)
         break;
 
     case READING_DATA:
-        if (QTYPE::CNAME != m_sType)
-            m_pRecordBuffer[m_sBytesReaded] = word;
-        else
-            m_dnpRecord.StreamInput(word);
+        if (NULL == m_pRecord)
+        {
+            m_pRecord = MakeRecord(m_sType);
+        }
 
-        if (++m_sBytesReaded == m_sRecordLength)
+        result = m_pRecord->StreamInput(word);
+        if (result < 0)
+        {
+            return result;
+        }
+        else if (0 == result)
         {
             m_status = STOPED;
-
-            if (QTYPE::CNAME == m_sType)
-            {
-                std::string strDomainNameData = m_dnpRecord.GetDomainName();
-                m_sRecordLength = strDomainNameData.length();
-                m_pRecordBuffer = new uint8_t[m_sRecordLength + 1];
-
-                memcpy((void *)m_pRecordBuffer,
-                        (const void *)strDomainNameData.c_str(), m_sRecordLength);
-                m_pRecordBuffer[m_sRecordLength] = '\0';
-            }
         }
         break;
 
@@ -121,14 +124,9 @@ uint32_t LResourceRecord::GetTTL() const
     return m_nTTL;
 }
 
-const uint8_t *LResourceRecord::GetBuffer(size_t *pSize) const 
+const BaseRecord *LResourceRecord::GetRecord() const
 {
-    if (NULL != pSize)
-    {
-        *pSize = m_sRecordLength;
-    }
-
-    return m_pRecordBuffer;
+    return m_pRecord;
 }
 
 std::string LResourceRecord::GetDomainName() const
@@ -138,5 +136,30 @@ std::string LResourceRecord::GetDomainName() const
 
 size_t LResourceRecord::GetBufferSize() const
 {
-    return m_sRecordLength;
+    return m_pRecord->GetDataLength();
+}
+
+BaseRecord *LResourceRecord::MakeRecord(uint16_t type)
+{
+    BaseRecord *ret = NULL;
+    switch (type)
+    {
+    case QTYPE::A:
+        ret = new ARecord(m_sRecordLength);
+        break;
+
+    case QTYPE::NS:
+        ret = new NSRecord(m_sRecordLength, m_vBuffer);
+        break;
+
+    case QTYPE::MX:
+        ret = new MXRecord(m_sRecordLength, m_vBuffer);
+        break;
+
+    default:
+        ret = new BaseRecord(m_sRecordLength);
+        break;
+    }
+
+    return ret;
 }

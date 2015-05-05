@@ -6,12 +6,15 @@
  */
 
 #include "ARecord.h"
+#include "../common/constants.h"
 #include <string.h>
+
+const uint16_t ARecord::TYPE = QTYPE::A;
 
 ARecord::ARecord(size_t size)
     : BaseRecord(size)
 {
-    
+    m_sType = TYPE;
 }
 
 ARecord::~ARecord()

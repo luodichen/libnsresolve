@@ -25,11 +25,18 @@ public:
     const uint8_t *GetRawData() const;
     size_t GetRawDataLength() const;
     virtual size_t GetDataLength() const;
+    virtual uint16_t GetType() const;
     
 private:
     size_t m_nRawSize;
     uint8_t *m_pRawData;
     size_t m_nWordsReaded;
+
+protected:
+    uint16_t m_sType;
+
+public:
+    static const uint16_t TYPE;
 };
 
 #endif /* SRC_RECORD_BASERECORD_H_ */

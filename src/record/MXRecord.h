@@ -21,6 +21,7 @@ public:
     virtual int StreamInput(uint8_t word);
     std::string GetDomainName() const;
     virtual size_t GetDataLength() const;
+    uint16_t GetPreference() const;
 
 private:
     enum STATUS
@@ -34,6 +35,9 @@ private:
     uint16_t m_sPreference;
 
     uint8_t *m_pWrite;
+
+public:
+    static const uint16_t TYPE;
 };
 
 #endif /* SRC_RECORD_MXRECORD_H_ */

@@ -20,6 +20,9 @@ public:
 public:
     in_addr_t GetIPAddress() const;
     virtual size_t GetDataLength() const;
+
+public:
+    static const uint16_t TYPE;
 };
 
 #endif /* SRC_RECORD_ARECORD_H_ */

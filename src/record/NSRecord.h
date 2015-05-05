@@ -26,6 +26,9 @@ public:
     
 private:
     LDomainNameParser m_parser;
+
+public:
+    static const uint16_t TYPE;
 };
 
 #endif /* SRC_RECORD_NSRECORD_H_ */

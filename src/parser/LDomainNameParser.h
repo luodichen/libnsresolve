@@ -20,7 +20,7 @@ public:
 
 public:
     int StreamInput(uint8_t word);
-    std::string GetDomainName();
+    std::string GetDomainName() const;
     
 private:
     LDomainNameParser(const LDomainNameParser &);

@@ -11,33 +11,54 @@
 #include <stdio.h>
 #include <string.h>
 
-int main()
+void print_records(const NSRESRECORD **pRecords)
 {
-    in_addr_t addr = inet_addr("114.114.114.114");
-    NSRRESULT *pResult = NULL;
-    int result = resolve("www.baidu.com", QTYPE::A, addr, &pResult, 15);
-    printf("result:%d\n", result);
-
-    const NSRESRECORD **ppAnswers = pResult->pAnswers;
-    while (NULL != *ppAnswers)
+    while (NULL != *pRecords)
     {
         struct in_addr ip;
-        const NSRESRECORD *pRecord = *ppAnswers;
+        const NSRESRECORD *pRecord = *pRecords;
 
         printf("%s: ", pRecord->szDomainName);
         printf("TTL=%d, type=%d, ", pRecord->nTTL, pRecord->sType);
 
         if (QTYPE::A == pRecord->sType)
         {
-            memcpy((void *)&ip, pRecord->pResData, sizeof(ip));
-            printf("IP=%s\n", inet_ntoa(ip));
+            PNSRARECORD pARecord = (PNSRARECORD)pRecord->pResData;
+            in_addr inaddr;
+            inaddr.s_addr = pARecord->address;
+            printf("IP=%s\n", inet_ntoa(inaddr));
+        }
+        else if (QTYPE::NS == pRecord->sType)
+        {
+            PNSRNSRECORD pNSRecord = (PNSRNSRECORD)pRecord->pResData;
+            printf("Name Server=%s\n", pNSRecord->szDomainName);
+        }
+        else if (QTYPE::MX == pRecord->sType)
+        {
+            PNSRMXRECORD pMXRecord = (PNSRMXRECORD)pRecord->pResData;
+            printf("MX Preference=%d, Server=%s", pMXRecord->sPreference, pMXRecord->szDomainName);
         }
         else
         {
-            printf("data=%s\n", pRecord->pResData);
+            printf("unknown\n");
         }
-        ppAnswers++;
+        pRecords++;
     }
+}
+
+int main()
+{
+    in_addr_t addr = inet_addr("114.114.114.114");
+    NSRRESULT *pResult = NULL;
+    int result = resolve("luodichen.com", QTYPE::A, addr, &pResult, 15);
+    printf("result:%d\n", result);
+
+    printf("-------- answers --------\n");
+    print_records(pResult->pAnswers);
+    printf("-------- authoritys --------\n");
+    print_records(pResult->pAuthoritys);
+    printf("-------- additionals --------\n");
+    print_records(pResult->pAdditionals);
 
     release(pResult);
 

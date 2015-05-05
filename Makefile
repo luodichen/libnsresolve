@@ -1,5 +1,5 @@
 export CXX = g++
-export CXXFLAGS = -fPIC -Wall -g -O2
+export CXXFLAGS = -fPIC -Wall -g
 export CXXLDFLAGS = -fPIC -shared
 export BIN = bin
 
