@@ -21,7 +21,8 @@ public:
     
 public:
     virtual int StreamInput(uint8_t word);
-    std::string GetDomainName();
+    std::string GetDomainName() const;
+    virtual size_t GetDataLength() const;
     
 private:
     LDomainNameParser m_parser;

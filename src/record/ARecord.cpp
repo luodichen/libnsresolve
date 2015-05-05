@@ -19,10 +19,15 @@ ARecord::~ARecord()
     
 }
 
-in_addr_t ARecord::GetIPAddress()
+in_addr_t ARecord::GetIPAddress() const
 {
     in_addr_t ret = 0;
     memcpy((void *)&ret, GetRawData(), sizeof(ret));
     
     return ret;
+}
+
+size_t ARecord::GetDataLength() const
+{
+    return sizeof(in_addr_t);
 }

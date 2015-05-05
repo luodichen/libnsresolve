@@ -24,6 +24,7 @@ public:
     virtual int StreamInput(uint8_t word);
     const uint8_t *GetRawData() const;
     size_t GetRawDataLength() const;
+    virtual size_t GetDataLength() const;
     
 private:
     size_t m_nRawSize;

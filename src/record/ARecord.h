@@ -18,7 +18,8 @@ public:
     virtual ~ARecord();
     
 public:
-    in_addr_t GetIPAddress();
+    in_addr_t GetIPAddress() const;
+    virtual size_t GetDataLength() const;
 };
 
 #endif /* SRC_RECORD_ARECORD_H_ */

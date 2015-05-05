@@ -30,7 +30,12 @@ int NSRecord::StreamInput(uint8_t word)
    return ret;
 }
 
-std::string NSRecord::GetDomainName()
+std::string NSRecord::GetDomainName() const
 {
     return m_parser.GetDomainName();
+}
+
+size_t NSRecord::GetDataLength() const
+{
+    return GetDomainName().length() + 1;
 }

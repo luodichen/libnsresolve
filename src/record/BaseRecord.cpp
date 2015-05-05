@@ -71,3 +71,8 @@ size_t BaseRecord::GetRawDataLength() const
 {
     return m_nRawSize;
 }
+
+size_t BaseRecord::GetDataLength() const
+{
+    return GetRawDataLength();
+}
