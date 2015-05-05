@@ -7,4 +7,4 @@ all: $(OBJ)
 	cp -f *.o ../../$(BIN)
 	
 %o: %c
-	$(CXX) $(CXXFLAGS) -o $@ $<	\
+	$(CXX) $(CXXFLAGS) -o $@ $<	
