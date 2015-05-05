@@ -9,6 +9,7 @@ subdirs = 	src/net \
 			src/parser \
 			src/resolver \
 			src/export \
+			src/record \
 			bin
 			
 .PHONY: all

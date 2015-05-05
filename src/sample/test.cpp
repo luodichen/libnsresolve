@@ -15,7 +15,7 @@ int main()
 {
     in_addr_t addr = inet_addr("114.114.114.114");
     NSRRESULT *pResult = NULL;
-    int result = resolve("luodichen.com", QTYPE::A, addr, &pResult, 15);
+    int result = resolve("www.baidu.com", QTYPE::A, addr, &pResult, 15);
     printf("result:%d\n", result);
 
     const NSRESRECORD **ppAnswers = pResult->pAnswers;
