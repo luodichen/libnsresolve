@@ -120,7 +120,9 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
         {
             setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void *)&timeout, sizeof(timeout));
             count = read(m_socket, (void *)pBuffer, max);
-            if (-1 == count && ETIMEDOUT == errno)
+
+            // I don't know why 35.......
+            if (-1 == count && (ETIMEDOUT == errno || 35 == errno))
             {
                 timeout.tv_sec = ((timeout.tv_sec * 2 <= MAX_TIMEOUT) ? 2 : 1) * timeout.tv_sec;
             }

@@ -50,8 +50,11 @@ int main()
 {
     in_addr_t addr = inet_addr("114.114.114.114");
     NSRRESULT *pResult = NULL;
-    int result = resolve("luodichen.com", QTYPE::NS, addr, &pResult, 15);
+    int result = resolve("work.luodc.cn", QTYPE::A, addr, &pResult, 15);
     printf("result:%d\n", result);
+
+    if (result < 0)
+        return -1;
 
     printf("-------- answers --------\n");
     print_records(pResult->pAnswers);
