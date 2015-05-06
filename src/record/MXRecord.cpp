@@ -37,7 +37,7 @@ int MXRecord::StreamInput(uint8_t word)
     case READING_PREFERENCE:
         *m_pWrite = word;
 
-        if (++m_pWrite - (uint8_t *)&m_sPreference > sizeof(m_sPreference))
+        if (++m_pWrite - (uint8_t *)&m_sPreference >= sizeof(m_sPreference))
         {
             m_sPreference = ntohs(m_sPreference);
             m_status = READING_DOMAIN_NAME;

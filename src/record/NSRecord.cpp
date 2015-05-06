@@ -14,7 +14,7 @@ NSRecord::NSRecord(size_t size, const std::vector<uint8_t> &vBuffer)
     : BaseRecord(size)
     , m_parser(vBuffer)
 {
-    
+    m_sType = TYPE;
 }
 
 NSRecord::~NSRecord()

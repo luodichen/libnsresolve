@@ -36,7 +36,7 @@ void print_records(const NSRESRECORD **pRecords)
         else if (QTYPE::MX == pRecord->sType)
         {
             PNSRMXRECORD pMXRecord = (PNSRMXRECORD)pRecord->pResData;
-            printf("MX Preference=%d, Server=%s", pMXRecord->sPreference, pMXRecord->szDomainName);
+            printf("MX Preference=%d, Server=%s\n", pMXRecord->sPreference, pMXRecord->szDomainName);
         }
         else
         {
@@ -50,7 +50,7 @@ int main()
 {
     in_addr_t addr = inet_addr("114.114.114.114");
     NSRRESULT *pResult = NULL;
-    int result = resolve("luodichen.com", QTYPE::A, addr, &pResult, 15);
+    int result = resolve("luodichen.com", QTYPE::NS, addr, &pResult, 15);
     printf("result:%d\n", result);
 
     printf("-------- answers --------\n");
