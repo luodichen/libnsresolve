@@ -14,6 +14,7 @@
 #include <sys/types.h>
 
 static const int MAX_TIMEOUT = 8;
+static const int MAX_RETRY = 10;
 
 LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
     : INetIO()
@@ -115,14 +116,14 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
         time_t tBegin = time(NULL);
 
         int count = 0;
+        int nTryCount = 0;
         ret = ERR::RECV_TIMEOUT;
-        while (time(NULL) - tBegin < m_nTimeout)
+        while ((time(NULL) - tBegin < m_nTimeout) && nTryCount++ < MAX_TIMEOUT)
         {
             setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void *)&timeout, sizeof(timeout));
             count = read(m_socket, (void *)pBuffer, max);
 
-            // I don't know why 35.......
-            if (-1 == count && (ETIMEDOUT == errno || 35 == errno))
+            if (-1 == count)
             {
                 timeout.tv_sec = ((timeout.tv_sec * 2 <= MAX_TIMEOUT) ? 2 : 1) * timeout.tv_sec;
             }

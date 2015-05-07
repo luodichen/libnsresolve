@@ -48,7 +48,7 @@ void print_records(const NSRESRECORD **pRecords)
 
 int main()
 {
-    in_addr_t addr = inet_addr("114.114.114.114");
+    in_addr_t addr = inet_addr("8.8.8.8");
     NSRRESULT *pResult = NULL;
     int result = resolve("work.luodc.cn", QTYPE::A, addr, &pResult, 15);
     printf("result:%d\n", result);
