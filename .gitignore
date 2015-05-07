@@ -1,3 +1,7 @@
 .project
 .cproject
 .settings/*
+project/Debug
+project/ipch
+project/*.sdf
+project/*.suo
