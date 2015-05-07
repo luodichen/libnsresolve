@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{e54aafb5-4c3f-4db7-95ef-1ea847f5a446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common">
+      <UniqueIdentifier>{944dca34-9dbd-4638-98bd-bbc10493f626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\export">
+      <UniqueIdentifier>{1bdb111d-edae-41d9-b156-67809965087a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\include">
+      <UniqueIdentifier>{2143bd81-308b-4cf4-8fb2-6d4b90be656f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\net">
+      <UniqueIdentifier>{b5455883-11e4-4c2c-a20d-a93b5a0499fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\parser">
+      <UniqueIdentifier>{1c917236-61ef-459f-8c61-7a84fbb76051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\record">
+      <UniqueIdentifier>{1102d23c-cfdb-4dcf-9d9b-3830f066f313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\resolver">
+      <UniqueIdentifier>{7ea8f7cf-de11-4caa-a205-afe4f8551cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sample">
+      <UniqueIdentifier>{a15ca8ea-320b-4a28-8931-5c49249affb8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\common\constants.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\DNSHeader.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\errcode.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\include\nsresolve.h">
+      <Filter>src\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\net\INetIO.h">
+      <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\net\LClient.h">
+      <Filter>src\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\parser\LDNSParser.h">
+      <Filter>src\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\parser\LDomainNameParser.h">
+      <Filter>src\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\parser\LQuestion.h">
+      <Filter>src\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\parser\LResourceRecord.h">
+      <Filter>src\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\record\ARecord.h">
+      <Filter>src\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\record\BaseRecord.h">
+      <Filter>src\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\record\MXRecord.h">
+      <Filter>src\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\record\NSRecord.h">
+      <Filter>src\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resolver\LDNSResolver.h">
+      <Filter>src\resolver</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\export\nsresolve.cpp">
+      <Filter>src\export</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\net\LClient.cpp">
+      <Filter>src\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\LDNSParser.cpp">
+      <Filter>src\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\LDomainNameParser.cpp">
+      <Filter>src\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\LQuestion.cpp">
+      <Filter>src\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\parser\LResourceRecord.cpp">
+      <Filter>src\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\record\ARecord.cpp">
+      <Filter>src\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\record\BaseRecord.cpp">
+      <Filter>src\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\record\MXRecord.cpp">
+      <Filter>src\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\record\NSRecord.cpp">
+      <Filter>src\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\resolver\LDNSResolver.cpp">
+      <Filter>src\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\sample\test.cpp">
+      <Filter>src\sample</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
