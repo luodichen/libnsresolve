@@ -13,6 +13,7 @@
 #include "../record/ARecord.h"
 #include "../record/MXRecord.h"
 #include "../record/NSRecord.h"
+#include "../record/CNAMERecord.h"
 #include <stdint.h>
 #include <time.h>
 #include <arpa/inet.h>
@@ -55,6 +56,11 @@ typedef struct _NSRNSRECORD
 {
     const char *szDomainName;
 } NSRNSRECORD, *PNSRNSRECORD;
+
+typedef struct _NSRCNAMERECORD
+{
+    const char *szDomainName;
+} NSRCNAMERECORD, *PNSRCNAMERECORD;
 
 typedef struct _NSRMXRECORD
 {

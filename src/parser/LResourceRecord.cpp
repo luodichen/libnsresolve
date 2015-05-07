@@ -155,6 +155,10 @@ BaseRecord *LResourceRecord::MakeRecord(uint16_t type)
     case QTYPE::MX:
         ret = new MXRecord(m_sRecordLength, m_vBuffer);
         break;
+        
+    case QTYPE::CNAME:
+        ret = new CNAMERecord(m_sRecordLength, m_vBuffer);
+        break;
 
     default:
         ret = new BaseRecord(m_sRecordLength);

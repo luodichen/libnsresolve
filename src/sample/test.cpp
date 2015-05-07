@@ -38,6 +38,11 @@ void print_records(const NSRESRECORD **pRecords)
             PNSRMXRECORD pMXRecord = (PNSRMXRECORD)pRecord->pResData;
             printf("MX Preference=%d, Server=%s\n", pMXRecord->sPreference, pMXRecord->szDomainName);
         }
+        else if (QTYPE::CNAME == pRecord->sType)
+        {
+            PNSRCNAMERECORD pCNAMERecord = (PNSRCNAMERECORD)pRecord->pResData;
+            printf("CNAME=%s\n", pCNAMERecord->szDomainName);
+        }
         else
         {
             printf("unknown\n");
@@ -48,7 +53,7 @@ void print_records(const NSRESRECORD **pRecords)
 
 int main()
 {
-    in_addr_t addr = inet_addr("8.8.8.8");
+    in_addr_t addr = inet_addr("114.114.114.114");
     NSRRESULT *pResult = NULL;
     int result = resolve("work.luodc.cn", QTYPE::A, addr, &pResult, 15);
     printf("result:%d\n", result);

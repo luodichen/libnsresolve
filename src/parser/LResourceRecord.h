@@ -16,6 +16,7 @@
 #include "../record/ARecord.h"
 #include "../record/NSRecord.h"
 #include "../record/MXRecord.h"
+#include "../record/CNAMERecord.h"
 #include "LDomainNameParser.h"
 
 class LResourceRecord

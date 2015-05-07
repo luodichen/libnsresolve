@@ -71,6 +71,21 @@ static uint8_t *fill_res_data(uint8_t *pCur, const LResourceRecord *pResourceRec
 
         break;
     }
+    
+    case QTYPE::CNAME: {
+        CNAMERecord *pRecord = (CNAMERecord *)pBaseRecord;
+        PNSRCNAMERECORD pTarget = (PNSRCNAMERECORD)pCur;
+        
+        pCur += sizeof(*pTarget);
+        
+        pTarget->szDomainName = (const char *)pCur;
+        std::string strDomainName = pRecord->GetDomainName();
+        memcpy((void *)pCur, (void *)strDomainName.c_str(), strDomainName.length());
+        pCur += strDomainName.length();
+
+       *(pCur++) = '\0';
+        break;
+    }
 
     default: {
         BaseRecord *pRecord = (BaseRecord *)pBaseRecord;
