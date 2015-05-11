@@ -39,7 +39,7 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
     Cleanup();
     
     int ret = 0;
-    LClient client(m_address, 53, LClient::UDP, m_timeout);
+    LClient client(m_address, 53, LClient::TCP, m_timeout);
     LDNSParser *pParser = new LDNSParser();
     m_pParser = pParser;
     
@@ -78,30 +78,12 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
         return ret;
     }
 
-    result = client.Write(pBuffer, bufsize);
+    result = NetQuery(pBuffer, bufsize, LClient::TCP);
+
     delete [] pBuffer;
-    pBuffer = NULL;
+        pBuffer = NULL;
 
-    if (ERR::NOERROR != result)
-    {
-        ret = result;
-        return ret;
-    }
-
-    uint8_t recvbuf[1024] = {0};
-    result = client.Read(recvbuf, sizeof(recvbuf));
-    if (result < 0)
-    {
-        ret = result;
-        return ret;
-    }
-
-    result = pParser->StreamInput(recvbuf, result);
-    if (ERR::NOERROR != result)
-    {
-        ret = result;
-        return ret;
-    }
+    ret = result;
 
     return ret;
 }
@@ -118,4 +100,62 @@ void LDNSResolver::Cleanup()
         delete m_pParser;
         m_pParser = NULL;
     }
+}
+
+int LDNSResolver::NetQuery(const uint8_t *pBuffer, size_t size, LClient::TYPE type)
+{
+    int result = 0;
+    LClient client(m_address, 53, type, m_timeout);
+
+    if (LClient::TCP == type)
+    {
+        uint16_t sSendLength = htons(size);
+        result = client.Write((const uint8_t *)&sSendLength, sizeof(sSendLength));
+        if (result < 0)
+            return result;
+    }
+
+    result = client.Write(pBuffer, size);
+    if (result < 0)
+        return result;
+
+    uint8_t recvbuf[1024] = {0};
+    uint16_t sTCPStreamLength = 0;
+
+    if (LClient::TCP == type)
+    {
+        result = client.Read((uint8_t *)&sTCPStreamLength, sizeof(sTCPStreamLength));
+        if (result < 0)
+            return result;
+        uint16_t sReceived = 0;
+        sTCPStreamLength = ntohs(sTCPStreamLength);
+        while (sReceived < sTCPStreamLength)
+        {
+            result = client.Read(recvbuf, sizeof(recvbuf));
+            if (result < 0)
+                return result;
+            else if (0 == result)
+                break;
+
+            sReceived += result;
+            result = m_pParser->StreamInput(recvbuf, result);
+            if (result < 0)
+                return result;
+        }
+    }
+    else if (LClient::UDP == type)
+    {
+        result = client.Read(recvbuf, sizeof(recvbuf));
+        if (result < 0)
+            return result;
+
+        m_pParser->StreamInput(recvbuf, result);
+    }
+    else
+    {
+        // IT'S IMPOSSABLE
+        assert(false);
+    }
+
+    return 0;
 }

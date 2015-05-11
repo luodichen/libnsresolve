@@ -26,11 +26,12 @@ public:
     
 private:
     void Cleanup();
+    int NetQuery(const uint8_t *pBuffer, size_t size, LClient::TYPE type);
 
 private:
     in_addr_t m_address;
     uint32_t m_timeout;
-    const LDNSParser *m_pParser;
+    LDNSParser *m_pParser;
 };
 
 #endif /* SRC_RESOLVER_LDNSRESOLVER_H_ */
