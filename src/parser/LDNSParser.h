@@ -27,6 +27,7 @@ public:
     std::vector<const LResourceRecord *> GetAnswers() const;
     std::vector<const LResourceRecord *> GetAuthoritys() const;
     std::vector<const LResourceRecord *> GetAdditionals() const;
+    DNSHEADER GetHeader() const;
     
 private:
     LDNSParser(const LDNSParser &);

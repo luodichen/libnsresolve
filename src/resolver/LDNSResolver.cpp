@@ -40,8 +40,7 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
     
     int ret = 0;
     LClient client(m_address, 53, LClient::TCP, m_timeout);
-    LDNSParser *pParser = new LDNSParser();
-    m_pParser = pParser;
+    m_pParser = new LDNSParser();
     
     DNSHEADER header;
     HEADER_FLAG flag;
@@ -78,7 +77,16 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
         return ret;
     }
 
-    result = NetQuery(pBuffer, bufsize, LClient::TCP);
+    result = NetQuery(pBuffer, bufsize, LClient::UDP);
+    DNSHEADER stResponseHeader = m_pParser->GetHeader();
+    HEADER_FLAG *pFlag = (HEADER_FLAG *)&stResponseHeader.wFlag;
+    if (pFlag->sFlag.tc)
+    {
+        Cleanup();
+        m_pParser = new LDNSParser();
+
+        result = NetQuery(pBuffer, bufsize, LClient::TCP);
+    }
 
     delete [] pBuffer;
         pBuffer = NULL;

@@ -14,6 +14,7 @@
 #include "../record/MXRecord.h"
 #include "../record/NSRecord.h"
 #include "../record/CNAMERecord.h"
+#include "../common/DNSHeader.h"
 #include <stdint.h>
 #include <time.h>
 #include <arpa/inet.h>
@@ -36,6 +37,7 @@ typedef struct _NSRRESRECORD
 
 typedef struct _NSRRESULT
 {
+    DNSHEADER header;
     const NSRESRECORD **pAnswers;
     const NSRESRECORD **pAuthoritys;
     const NSRESRECORD **pAdditionals;

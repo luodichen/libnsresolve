@@ -191,3 +191,8 @@ std::vector<const LResourceRecord *> LDNSParser::GetResources(const std::vector<
     
     return ret;
 }
+
+DNSHEADER LDNSParser::GetHeader() const
+{
+    return m_header;
+}

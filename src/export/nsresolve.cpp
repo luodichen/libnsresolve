@@ -170,6 +170,7 @@ int resolve(const char *szName, uint16_t sType, in_addr_t server, NSRRESULT **pR
     memset((void *)pBuffer, 0, bufsize);
 
     *pResult = (PNSRRESULT)pBuffer;
+    (*pResult)->header = parser->GetHeader();
     uint8_t *pCur = pBuffer + sizeof(NSRRESULT);
     (*pResult)->pAnswers = (const NSRESRECORD **)pCur;
     pCur += (answers.size() + 1) * sizeof(PNSRESRECORD);
