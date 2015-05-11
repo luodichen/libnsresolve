@@ -122,7 +122,7 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
         int count = 0;
         int nTryCount = 0;
         ret = ERR::RECV_TIMEOUT;
-        while ((time(NULL) - tBegin < m_nTimeout) && nTryCount++ < MAX_TIMEOUT)
+        while ((time(NULL) - tBegin < m_nTimeout) && nTryCount++ < MAX_RETRY)
         {
             setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void *)&timeout, sizeof(timeout));
             count = read(m_socket, (void *)pBuffer, max);

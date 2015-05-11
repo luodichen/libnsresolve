@@ -1,9 +1,11 @@
 export CXX = g++
-export CXXFLAGS = -fPIC -Wall -g
+export CXXFLAGS = -fPIC -Wall -O2
 export CXXLDFLAGS = -fPIC -shared
 export BIN = bin
 
 export TARGET = $(BIN)/libnsresolve.so
+
+INSTALLPATH = /usr/lib/libnsresolve.so
 
 subdirs = 	src/net \
 			src/parser \
@@ -16,9 +18,14 @@ subdirs = 	src/net \
 all:$(TARGET)
 	
 $(TARGET):
-	@for dir in $(subdirs); do $(MAKE) -C $$dir || exit 1; done \
+	@for dir in $(subdirs); do $(MAKE) -C $$dir || exit 1; done
+	
+.PHONY: install
+install:$(TARGET)
+	sudo cp -f $(TARGET) $(INSTALLPATH)
 	
 .PHONY: clean
 clean:
 	rm -f `find . -name "*.o"`
 	rm -f $(TARGET)
+	sudo rm -f $(INSTALLPATH)
