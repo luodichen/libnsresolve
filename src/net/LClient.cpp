@@ -46,7 +46,11 @@ LClient::LClient(const char *szAddress, uint16_t port, TYPE type, uint32_t timeo
 
 LClient::~LClient()
 {
-
+    if (m_socket >= 0)
+    {
+        close(m_socket);
+        m_socket = -1;
+    }
 }
 
 int LClient::Init()
