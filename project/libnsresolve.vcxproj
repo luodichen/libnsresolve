@@ -39,7 +39,6 @@
     <ClCompile Include="..\src\record\MXRecord.cpp" />
     <ClCompile Include="..\src\record\NSRecord.cpp" />
     <ClCompile Include="..\src\resolver\LDNSResolver.cpp" />
-    <ClCompile Include="..\src\sample\test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D89AD269-70B4-4C40-8498-302D3FD7590F}</ProjectGuid>
