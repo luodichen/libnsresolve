@@ -1,0 +1,4 @@
+LIBRARY libnsresolve
+EXPORTS
+	resolve @1
+	release @2

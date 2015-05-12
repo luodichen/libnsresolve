@@ -17,8 +17,9 @@
 #include "../common/DNSHeader.h"
 #include <stdint.h>
 #include <time.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
+//#include <arpa/inet.h>
+#include "../common/socket.h"
+//#include <netinet/in.h>
 #include <string.h>
 
 #ifdef __cplusplus

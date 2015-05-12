@@ -19,7 +19,7 @@ LDNSParser::LDNSParser()
     , m_sAdditional(0)
     , m_status(WAIT_HEADER)
     , m_cur()
-    , m_nLastError(ERR::NOERROR)
+    , m_nLastError(ERR::ERR_NOERROR)
 {
 
 }
@@ -51,7 +51,7 @@ int LDNSParser::StreamInput(const uint8_t *pBuffer, int nSize)
         if (e < 0) return e;
     }
     
-    return ERR::NOERROR;
+    return ERR::ERR_NOERROR;
 }
 
 int LDNSParser::StreamInput(uint8_t word)
@@ -132,7 +132,7 @@ int LDNSParser::StreamInput(uint8_t word)
         SetError(ERR::NO_MORE_WORDS);
         break;
         
-    case ERROR:
+    case ERR:
         return m_nLastError;
         break;
     }
@@ -154,7 +154,7 @@ void LDNSParser::ClearRecords(std::vector<LResourceRecord *> &record)
 
 void LDNSParser::SetError(int errcode)
 {
-    m_status = ERROR;
+    m_status = ERR;
     m_nLastError = errcode;
 }
 

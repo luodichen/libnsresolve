@@ -7,7 +7,8 @@
 
 #include "LDNSResolver.h"
 #include "../common/constants.h"
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
+#include "../common/socket.h"
 #include <sys/types.h>
 #include <stdint.h>
 #include <string.h>
@@ -52,7 +53,7 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
     header.wFlag = htons(flag.wFlag);
     header.wQuestions = htons(1);
 
-    LQuestion question(szName, sType, QCLASS::IN);
+    LQuestion question(szName, sType, QCLASS::INET);
     size_t bufsize = 0;
     int result = question.MakeBuffer(NULL, &bufsize);
     if (ERR::NEED_LARGER_BUF != result)
@@ -69,7 +70,7 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
 
     memcpy((void *)pBuffer, (void *)&header, sizeof(header));
     result = question.MakeBuffer(pBuffer + sizeof(header), &bufsize);
-    if (ERR::NOERROR != result)
+    if (ERR::ERR_NOERROR != result)
     {
         delete [] pBuffer;
         pBuffer = NULL;

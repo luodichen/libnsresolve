@@ -76,6 +76,12 @@
     <ClInclude Include="..\src\resolver\LDNSResolver.h">
       <Filter>src\resolver</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\common\socket.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\record\CNAMERecord.h">
+      <Filter>src\record</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\export\nsresolve.cpp">
@@ -111,5 +117,11 @@
     <ClCompile Include="..\src\resolver\LDNSResolver.cpp">
       <Filter>src\resolver</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\record\CNAMERecord.cpp">
+      <Filter>src\record</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="export.def" />
   </ItemGroup>
 </Project>

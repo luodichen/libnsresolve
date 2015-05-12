@@ -25,7 +25,7 @@ namespace QTYPE
 
 namespace QCLASS
 {
-    static const uint16_t IN  = 0x0001; // Internet
+    static const uint16_t INET  = 0x0001; // Internet
 }
 
 namespace FLAG_QR
@@ -41,7 +41,7 @@ namespace FLAG_OPCODE
 
 namespace FLAG_RCODE
 {
-    static const uint8_t NOERROR = 0;
+    //static const uint8_t NOERROR = 0;
     static const uint8_t FORMAT_INCORRECT = 1;
     static const uint8_t SERVER_ERROR = 2;
     static const uint8_t NAME_ERROR = 3;

@@ -7,7 +7,8 @@
 
 #include "LResourceRecord.h"
 #include "../common/constants.h"
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
+#include "../common/socket.h"
 #include <string.h>
 
 LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
