@@ -29,6 +29,25 @@ public:
         UDP = 1
     } TYPE;
 
+#ifdef _MSC_VER
+    class WSAInit
+    {
+    public:
+        WSAInit()
+        {
+            WSADATA wsaData = {0};
+            WSAStartup(MAKEWORD(2, 2), &wsaData);
+        }
+
+        ~WSAInit()
+        {
+            WSACleanup();
+        }
+    };
+
+    const static WSAInit s_wsainit;
+#endif /* _MSC_VER */
+
 public:
     LClient(in_addr_t address, uint16_t port = 53, TYPE type = UDP, uint32_t timeout = 15);
     LClient(const char *szAddress, uint16_t port = 53, TYPE type = UDP, uint32_t timeout = 15);

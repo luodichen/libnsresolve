@@ -16,6 +16,10 @@
 static const int MAX_TIMEOUT = 8;
 static const int MAX_RETRY = 10;
 
+#ifdef _MSC_VER
+const LClient::WSAInit LClient::s_wsainit;
+#endif /* _MSC_VER */
+
 LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
     : INetIO()
     , m_address()
