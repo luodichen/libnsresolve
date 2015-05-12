@@ -16,6 +16,10 @@
 static const int MAX_TIMEOUT = 8;
 static const int MAX_RETRY = 10;
 
+#ifdef _MSC_VER
+const LClient::WSAInit LClient::s_wsainit;
+#endif /* _MSC_VER */
+
 LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
     : INetIO()
     , m_address()
@@ -27,7 +31,8 @@ LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
     , m_sockaddr()
 {
     m_address.s_addr = address;
-    assert(0 == Init());
+    int result = Init();
+    assert(0 == result);
 }
 
 LClient::LClient(const char *szAddress, uint16_t port, TYPE type, uint32_t timeout)
@@ -41,7 +46,8 @@ LClient::LClient(const char *szAddress, uint16_t port, TYPE type, uint32_t timeo
     , m_sockaddr()
 {
     m_address.s_addr = inet_addr(szAddress);
-    assert(0 == Init());
+    int result = Init();
+    assert(0 == result);
 }
 
 LClient::~LClient()

@@ -7,7 +7,6 @@
 
 #include "../include/nsresolve.h"
 #include "../common/constants.h"
-#include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
 
