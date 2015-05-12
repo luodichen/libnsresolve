@@ -72,7 +72,7 @@ int LQuestion::StreamInput(uint8_t word)
 
 int LQuestion::MakeBuffer(uint8_t *pBuffer, size_t *pSize)
 {
-    int ret = ERR::NOERROR;
+    int ret = ERR::ERR_NOERROR;
     if (NULL == pSize)
     {
         ret = ERR::INVALID_PARAM;

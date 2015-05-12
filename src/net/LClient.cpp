@@ -9,7 +9,7 @@
 #include "LClient.h"
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
 
@@ -48,7 +48,8 @@ LClient::~LClient()
 {
     if (m_socket >= 0)
     {
-        close(m_socket);
+        //close(m_socket);
+        close_socket(m_socket);
         m_socket = -1;
     }
 }
@@ -68,8 +69,8 @@ int LClient::Init()
         memset((void *)&timeout, 0, sizeof(timeout));
         timeout.tv_sec = m_nTimeout;
 
-        setsockopt(m_socket, SOL_SOCKET, SO_SNDTIMEO, (void *)&timeout, sizeof(timeout));
-        setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void *)&timeout, sizeof(timeout));
+        setsockopt(m_socket, SOL_SOCKET, SO_SNDTIMEO, CONST_BUF(&timeout), sizeof(timeout));
+        setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, CONST_BUF(&timeout), sizeof(timeout));
     }
 
     memset((void *)&m_sockaddr, 0, sizeof(m_sockaddr));
@@ -89,7 +90,7 @@ int LClient::Write(const uint8_t *pBuffer, size_t size)
     }
     m_connected = true;
 
-    if (-1 == send(m_socket, pBuffer, size, 0))
+    if (-1 == send(m_socket, CONST_BUF(pBuffer), size, 0))
     {
         return ERR::SEND_DATA_FAILED;
     }
@@ -105,7 +106,7 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
 
     if (LClient::TCP == m_type)
     {
-        int count = read(m_socket, (void *)pBuffer, max);
+        int count = recv(m_socket, RECV_BUF(pBuffer), max, 0);
         if (-1 == count)
         {
             ret = ERR::RECV_FAILED;
@@ -124,8 +125,8 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
         ret = ERR::RECV_TIMEOUT;
         while ((time(NULL) - tBegin < m_nTimeout) && nTryCount++ < MAX_RETRY)
         {
-            setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (void *)&timeout, sizeof(timeout));
-            count = read(m_socket, (void *)pBuffer, max);
+            setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, CONST_BUF(&timeout), sizeof(timeout));
+            count = recv(m_socket, RECV_BUF(pBuffer), max, 0);
 
             if (-1 == count)
             {

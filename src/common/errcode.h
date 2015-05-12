@@ -17,7 +17,7 @@
 
 namespace ERR
 {
-    static const int NOERROR                        = 0;
+    static const int ERR_NOERROR                    = 0;
     static const int DOMAIN_NAME_FORMAT_INCORRECT   = -101;
     static const int HIT_THE_END_OF_DOMAIN_NAME     = -102;
     static const int HIT_THE_END_OF_RESOURCE_RECORD = -103;

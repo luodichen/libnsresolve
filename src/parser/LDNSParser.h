@@ -57,7 +57,7 @@ private:
         WAIT_QUESTION = 1,
         WAIT_RESOURCES = 2,
         STOPED = 3,
-        ERROR = -1
+        ERR = -1
     } m_status;
     
     struct CUR

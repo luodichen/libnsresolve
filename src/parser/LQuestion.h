@@ -11,7 +11,8 @@
 #include "../common/errcode.h"
 #include "../common/constants.h"
 #include "LDomainNameParser.h"
-#include <arpa/inet.h>
+//#include <arpa/inet.h>
+#include "../common/socket.h"
 #include <stdint.h>
 #include <vector>
 #include <string>

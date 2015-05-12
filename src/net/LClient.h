@@ -9,9 +9,12 @@
 #define SRC_NET_LCLIENT_H_
 
 #include "INetIO.h"
+/*
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+*/
+#include "../common/socket.h"
 #include <stdint.h>
 #include <assert.h>
 #include <stdio.h>
