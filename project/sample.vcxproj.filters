@@ -10,8 +10,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\sample\test.cpp">
+    <ClCompile Include="..\src\sample\sample.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sample\getopt.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\sample\getopt.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

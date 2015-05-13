@@ -82,12 +82,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\sample\test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="libnsresolve.vcxproj">
       <Project>{d89ad269-70b4-4c40-8498-302d3fd7590f}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\sample\getopt.c" />
+    <ClCompile Include="..\src\sample\sample.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\sample\getopt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
