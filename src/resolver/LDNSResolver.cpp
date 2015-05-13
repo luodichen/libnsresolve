@@ -23,11 +23,14 @@
 
 #include "LDNSResolver.h"
 #include "../common/constants.h"
-//#include <arpa/inet.h>
 #include "../common/socket.h"
 #include <sys/types.h>
 #include <stdint.h>
 #include <string.h>
+#include <time.h>
+
+static const int MAX_TIMEOUT = 8;
+static const int MAX_RETRY = 10;
 
 LDNSResolver::LDNSResolver(in_addr_t address, uint32_t timeout)
     : m_address(address)
@@ -56,7 +59,6 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
     Cleanup();
     
     int ret = 0;
-    LClient client(m_address, 53, LClient::TCP, m_timeout);
     m_pParser = new LDNSParser();
     
     DNSHEADER header;
@@ -130,33 +132,33 @@ void LDNSResolver::Cleanup()
 int LDNSResolver::NetQuery(const uint8_t *pBuffer, size_t size, LClient::TYPE type)
 {
     int result = 0;
-    LClient client(m_address, 53, type, m_timeout);
+    LClient client(m_address, 53, type);
 
     if (LClient::TCP == type)
     {
         uint16_t sSendLength = htons(size);
-        result = client.Write((const uint8_t *)&sSendLength, sizeof(sSendLength));
+        result = client.Write((const uint8_t *)&sSendLength, sizeof(sSendLength), m_timeout);
         if (result < 0)
             return result;
     }
-
-    result = client.Write(pBuffer, size);
-    if (result < 0)
-        return result;
 
     uint8_t recvbuf[1024] = {0};
     uint16_t sTCPStreamLength = 0;
 
     if (LClient::TCP == type)
     {
-        result = client.Read((uint8_t *)&sTCPStreamLength, sizeof(sTCPStreamLength));
+        result = client.Write(pBuffer, size, m_timeout);
+        if (result < 0)
+            return result;
+
+        result = client.Read((uint8_t *)&sTCPStreamLength, sizeof(sTCPStreamLength), m_timeout);
         if (result < 0)
             return result;
         uint16_t sReceived = 0;
         sTCPStreamLength = ntohs(sTCPStreamLength);
         while (sReceived < sTCPStreamLength)
         {
-            result = client.Read(recvbuf, sizeof(recvbuf));
+            result = client.Read(recvbuf, sizeof(recvbuf), m_timeout);
             if (result < 0)
                 return result;
             else if (0 == result)
@@ -170,9 +172,22 @@ int LDNSResolver::NetQuery(const uint8_t *pBuffer, size_t size, LClient::TYPE ty
     }
     else if (LClient::UDP == type)
     {
-        result = client.Read(recvbuf, sizeof(recvbuf));
+        uint32_t nTimeout = 2;
+        int nRetry = 0;
+        time_t tStart = time(NULL);
+
+        do
+        {
+            result = client.Write(pBuffer, size, nTimeout);
+            if (result < 0)
+                return result;
+
+            result = client.Read(recvbuf, sizeof(recvbuf), nTimeout);
+            nTimeout = ((nTimeout * 2) <= MAX_TIMEOUT) ? (nTimeout * 2) : MAX_TIMEOUT;
+        } while (result < 0 && nRetry < MAX_RETRY && (time(NULL) - tStart < m_timeout));
+        
         if (result < 0)
-            return result;
+            return time(NULL) - tStart < m_timeout ? result : ERR::RECV_TIMEOUT;
 
         m_pParser->StreamInput(recvbuf, result);
     }

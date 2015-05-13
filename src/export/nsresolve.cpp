@@ -146,11 +146,6 @@ static uint8_t *fill_result_buf(uint8_t *pCur, const NSRESRECORD **ppRecord,
         *(pCur++) = '\0';
 
         pRecord->pResData = pCur;
-        /*
-        size_t nResLen = (*iter)->GetBufferSize();
-        memcpy((void *)pCur, (*iter)->GetBuffer(NULL), nResLen);
-        pCur += nResLen;
-        */
         pCur = fill_res_data(pCur, *iter);
         i++;
     }
