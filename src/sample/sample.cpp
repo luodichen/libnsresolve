@@ -23,12 +23,17 @@
 
 #include "../include/nsresolve.h"
 #include "../common/constants.h"
-#include "getopt.h"
 #include <stdio.h>
 #include <string.h>
 #include <string>
 #include <map>
 #include <ctype.h>
+
+#ifdef _MSC_VER
+#include "getopt.h"
+#else
+#include <unistd.h>
+#endif /* _MSC_VER */
 
 static class _TypeMap : public std::map<std::string, uint16_t>
 {
@@ -147,7 +152,7 @@ int main(int argc, char *argv[])
             }
 
             in_addr in;
-            in.S_un.S_addr = addr;
+            in.s_addr = addr;
             printf("Ask domain name %s from %s:\n", strDomainName.c_str(), inet_ntoa(in));
             printf("-------- answers --------\n");
             print_records(pResult->pAnswers);
