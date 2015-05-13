@@ -116,7 +116,9 @@ int LQuestion::MakeBuffer(uint8_t *pBuffer, size_t *pSize)
             {
                 pBuffer[nCur] = 0;
                 pBuffer[nCur - nPartLen - 1] = nPartLen;
-                nCur++;
+
+                if (nPartLen > 0)
+                    nCur++;
                 nPartLen = 0;
             }
             else
@@ -127,7 +129,9 @@ int LQuestion::MakeBuffer(uint8_t *pBuffer, size_t *pSize)
         }
 
         pBuffer[nCur - nPartLen - 1] = nPartLen;
-        pBuffer[nCur++] = 0;
+
+        if (nPartLen > 0)
+            pBuffer[nCur++] = 0;
 
         memcpy((void*)(pBuffer + nCur), (void*)&m_header, sizeof(m_header));
     }
