@@ -23,24 +23,20 @@
 
 #include "../common/errcode.h"
 #include "LClient.h"
-#include <time.h>
 #include <string.h>
 //#include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
 
-static const int MAX_TIMEOUT = 8;
-static const int MAX_RETRY = 10;
-
 #ifdef _MSC_VER
 const LClient::WSAInit LClient::s_wsainit;
 #endif /* _MSC_VER */
 
-LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
+LClient::LClient(in_addr_t address, uint16_t port, TYPE type)
     : INetIO()
     , m_address()
     , m_sPort(port)
-    , m_nTimeout(timeout)
+    //, m_nTimeout(timeout)
     , m_type(type)
     , m_socket(-1)
     , m_connected(false)
@@ -51,11 +47,11 @@ LClient::LClient(in_addr_t address, uint16_t port, TYPE type, uint32_t timeout)
     assert(0 == result);
 }
 
-LClient::LClient(const char *szAddress, uint16_t port, TYPE type, uint32_t timeout)
+LClient::LClient(const char *szAddress, uint16_t port, TYPE type)
     : INetIO()
     , m_address()
     , m_sPort(port)
-    , m_nTimeout(timeout)
+    //, m_nTimeout(timeout)
     , m_type(type)
     , m_socket(-1)
     , m_connected(false)
@@ -85,6 +81,7 @@ int LClient::Init()
     if (-1 == m_socket)
         ret = -1;
 
+    /*
     if (LClient::TCP == m_type)
     {
         struct timeval timeout;
@@ -94,6 +91,7 @@ int LClient::Init()
         setsockopt(m_socket, SOL_SOCKET, SO_SNDTIMEO, CONST_BUF(&timeout), sizeof(timeout));
         setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, CONST_BUF(&timeout), sizeof(timeout));
     }
+    */
 
     memset((void *)&m_sockaddr, 0, sizeof(m_sockaddr));
     m_sockaddr.sin_family = AF_INET;
@@ -103,8 +101,9 @@ int LClient::Init()
     return ret;
 }
 
-int LClient::Write(const uint8_t *pBuffer, size_t size)
+int LClient::Write(const uint8_t *pBuffer, size_t size, uint32_t timeout)
 {
+    SetTimeout(SO_SNDTIMEO, timeout);
     if (!m_connected
             && 0 != connect(m_socket, (sockaddr*)&m_sockaddr, sizeof(m_sockaddr)))
     {
@@ -120,12 +119,23 @@ int LClient::Write(const uint8_t *pBuffer, size_t size)
     return 0;
 }
 
-int LClient::Read(uint8_t *pBuffer, size_t max)
+int LClient::Read(uint8_t *pBuffer, size_t max, uint32_t timeout)
 {
     int ret = 0;
     if (!m_connected)
         return ERR::NOT_CONNECTED;
 
+    SetTimeout(SO_RCVTIMEO, timeout);
+    int count = recv(m_socket, RECV_BUF(pBuffer), max, 0);
+    if (-1 == count)
+    {
+        ret = ERR::RECV_FAILED;
+    }
+    else
+    {
+        ret = count;
+    }
+    /*
     if (LClient::TCP == m_type)
     {
         int count = recv(m_socket, RECV_BUF(pBuffer), max, 0);
@@ -166,5 +176,15 @@ int LClient::Read(uint8_t *pBuffer, size_t max)
             }
         }
     }
+    */
     return ret;
+}
+
+void LClient::SetTimeout(int opt, uint32_t value)
+{
+    struct timeval timeout;
+    memset((void *)&timeout, 0, sizeof(timeout));
+    timeout.tv_sec = value;
+
+    int ret = setsockopt(m_socket, SOL_SOCKET, opt, CONST_BUF(&timeout), sizeof(timeout));
 }

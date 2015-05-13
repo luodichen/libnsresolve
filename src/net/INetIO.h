@@ -32,8 +32,8 @@ class INetIO
 public:
     INetIO() { };
     virtual ~INetIO() { };
-    virtual int Write(const uint8_t *pBuffer, size_t size) = 0;
-    virtual int Read(uint8_t *pBuffer, size_t max) = 0;
+    virtual int Write(const uint8_t *pBuffer, size_t size, uint32_t timeout) = 0;
+    virtual int Read(uint8_t *pBuffer, size_t max, uint32_t timeout) = 0;
 };
 
 #endif /* SRC_NET_INETIO_H_ */
