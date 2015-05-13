@@ -23,7 +23,6 @@
 
 #include "MXRecord.h"
 #include "../common/constants.h"
-//#include <arpa/inet.h>
 #include "../common/socket.h"
 
 const uint16_t MXRecord::TYPE = QTYPE::MX;

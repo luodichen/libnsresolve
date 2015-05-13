@@ -25,11 +25,6 @@
 #define SRC_NET_LCLIENT_H_
 
 #include "INetIO.h"
-/*
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-*/
 #include "../common/socket.h"
 #include <stdint.h>
 #include <assert.h>
@@ -80,7 +75,6 @@ private:
 private:
     in_addr m_address;
     uint16_t m_sPort;
-    //uint32_t m_nTimeout;
     TYPE m_type;
     int m_socket;
     bool m_connected;

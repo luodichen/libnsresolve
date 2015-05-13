@@ -25,7 +25,6 @@
 #define SRC_RECORD_ARECORD_H_
 
 #include "BaseRecord.h"
-//#include <arpa/inet.h>
 #include "../common/socket.h"
 
 class ARecord : public BaseRecord

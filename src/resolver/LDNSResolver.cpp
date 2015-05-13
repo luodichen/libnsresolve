@@ -23,7 +23,6 @@
 
 #include "LDNSResolver.h"
 #include "../common/constants.h"
-//#include <arpa/inet.h>
 #include "../common/socket.h"
 #include <sys/types.h>
 #include <stdint.h>

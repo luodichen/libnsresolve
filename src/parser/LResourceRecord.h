@@ -46,7 +46,6 @@ public:
     uint16_t GetType() const;
     uint16_t GetClass() const;
     uint32_t GetTTL() const;
-    //const uint8_t *GetBuffer(size_t *pSize) const;
     const BaseRecord *GetRecord() const;
     std::string GetDomainName() const;
     size_t GetBufferSize() const;
@@ -62,7 +61,6 @@ protected:
     uint16_t m_sType;
     uint16_t m_sClass;
     uint32_t m_nTTL;
-    //uint8_t *m_pRecordBuffer;
     uint16_t m_sRecordLength;
     BaseRecord *m_pRecord;
 
@@ -95,9 +93,7 @@ private:
     } m_status;
 
     LDomainNameParser m_dnp;
-    //LDomainNameParser m_dnpRecord;
     uint8_t *m_pHeaderCur;
-    //uint16_t m_sBytesReaded;
 
     const std::vector<uint8_t> m_vBuffer;
 };

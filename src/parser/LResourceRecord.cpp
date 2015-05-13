@@ -23,7 +23,6 @@
 
 #include "LResourceRecord.h"
 #include "../common/constants.h"
-//#include <arpa/inet.h>
 #include "../common/socket.h"
 #include <string.h>
 
@@ -32,15 +31,12 @@ LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
     , m_sType(0)
     , m_sClass(0)
     , m_nTTL(0)
-    //, m_pRecordBuffer(NULL)
     , m_sRecordLength(0)
     , m_pRecord(NULL)
     , m_header()
     , m_status(PARSING_DOMAIN_NAME)
     , m_dnp(vBuffer)
-    //, m_dnpRecord(vBuffer)
     , m_pHeaderCur((uint8_t*)&m_header)
-    //, m_sBytesReaded(0)
     , m_vBuffer(vBuffer)
 {
 
@@ -48,13 +44,6 @@ LResourceRecord::LResourceRecord(const std::vector<uint8_t> &vBuffer)
 
 LResourceRecord::~LResourceRecord()
 {
-    /*
-    if (NULL != m_pRecordBuffer)
-    {
-        delete [] m_pRecordBuffer;
-        m_pRecordBuffer = NULL;
-    }
-    */
     if (NULL != m_pRecord)
     {
         delete m_pRecord;
@@ -89,9 +78,6 @@ int LResourceRecord::StreamInput(uint8_t word)
 
             if (m_sRecordLength > 0)
             {
-                //if (QTYPE::A == m_sType)
-                //    m_pRecordBuffer = new uint8_t[m_sRecordLength];
-
                 m_status =  READING_DATA;
             }
             else

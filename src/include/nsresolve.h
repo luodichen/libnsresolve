@@ -33,9 +33,7 @@
 #include "../common/DNSHeader.h"
 #include <stdint.h>
 #include <time.h>
-//#include <arpa/inet.h>
 #include "../common/socket.h"
-//#include <netinet/in.h>
 #include <string.h>
 
 #ifdef __cplusplus
@@ -88,7 +86,6 @@ typedef struct _NSRMXRECORD
 } NSRMXRECORD, *PNSRMXRECORD;
 
 int resolve(const char *szName, uint16_t sType, in_addr_t server, NSRRESULT **pResult, time_t timeout);
-//int resolve(const char *szName, uint16_t sType, const char *szServer, NSRRESULT **pResult, time_t timeout);
 void release(NSRRESULT *pResult);
 
 #ifdef __cplusplus
