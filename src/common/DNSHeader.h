@@ -31,12 +31,12 @@
 
 struct DNSHEADER 
 {
-    int16_t     wTransId;
-    int16_t     wFlag;
-    int16_t     wQuestions;
-    int16_t     wAnswerRRs;
-    int16_t     wAuthorityRRs;
-    int16_t     wAdditionalRRs;
+    uint16_t     wTransId;
+    uint16_t     wFlag;
+    uint16_t     wQuestions;
+    uint16_t     wAnswerRRs;
+    uint16_t     wAuthorityRRs;
+    uint16_t     wAdditionalRRs;
     
     DNSHEADER() 
         : wTransId(0)
