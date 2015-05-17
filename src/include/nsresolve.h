@@ -24,21 +24,52 @@
 #ifndef SRC_INCLUDE_NSRESOLVE_H_
 #define SRC_INCLUDE_NSRESOLVE_H_
 
-#include "../resolver/LDNSResolver.h"
-#include "../record/BaseRecord.h"
-#include "../record/ARecord.h"
-#include "../record/MXRecord.h"
-#include "../record/NSRecord.h"
-#include "../record/CNAMERecord.h"
-#include "../common/DNSHeader.h"
+
 #include <stdint.h>
 #include <time.h>
-#include "../common/socket.h"
 #include <string.h>
+#ifdef _MSC_VER
+#define in_addr_t uint32_t
+#else
+#include <arpa/inet.h>
+#endif /* _MSC_VER */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
+
+#pragma pack(1)
+
+struct DNSHEADER
+{
+    uint16_t     wTransId;
+    uint16_t     wFlag;
+    uint16_t     wQuestions;
+    uint16_t     wAnswerRRs;
+    uint16_t     wAuthorityRRs;
+    uint16_t     wAdditionalRRs;
+};
+
+struct _HEADER_FLAG
+{
+    uint16_t rcode:4;
+    uint16_t reserved:3;
+    uint16_t ra:1;
+
+    uint16_t rd:1;
+    uint16_t tc:1;
+    uint16_t aa:1;
+    uint16_t opcode;
+    uint16_t qr;
+};
+
+union HEADER_FLAG
+{
+    uint16_t wFlag;
+    _HEADER_FLAG sFlag;
+};
+
+#pragma pack()
 
 typedef struct _NSRRESRECORD
 {

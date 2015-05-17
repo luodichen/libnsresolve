@@ -34,9 +34,6 @@
     <ClInclude Include="..\src\common\constants.h">
       <Filter>src\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\common\DNSHeader.h">
-      <Filter>src\common</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\common\errcode.h">
       <Filter>src\common</Filter>
     </ClInclude>

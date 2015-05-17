@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\common\constants.h" />
-    <ClInclude Include="..\src\common\DNSHeader.h" />
     <ClInclude Include="..\src\common\errcode.h" />
     <ClInclude Include="..\src\common\socket.h" />
     <ClInclude Include="..\src\include\nsresolve.h" />
