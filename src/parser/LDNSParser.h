@@ -25,7 +25,7 @@
 #define SRC_PARSER_LDNSPARSER_H_
 
 #include "../common/errcode.h"
-#include "../common/DNSHeader.h"
+#include "../include/nsresolve.h"
 #include "LResourceRecord.h"
 #include "LQuestion.h"
 #include <stdint.h>

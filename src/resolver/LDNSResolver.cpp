@@ -62,6 +62,8 @@ int LDNSResolver::Query(const char *szName, uint16_t sType)
     m_pParser = new LDNSParser();
     
     DNSHEADER header;
+    memset(&header, 0, sizeof(header));
+
     HEADER_FLAG flag;
 
     flag.wFlag = 0;

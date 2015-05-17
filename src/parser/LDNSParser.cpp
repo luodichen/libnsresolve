@@ -37,7 +37,7 @@ LDNSParser::LDNSParser()
     , m_cur()
     , m_nLastError(ERR::ERR_NOERROR)
 {
-
+    memset(&m_header, 0, sizeof(m_header));
 }
 
 LDNSParser::~LDNSParser()

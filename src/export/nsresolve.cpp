@@ -22,6 +22,13 @@
  */
 
 #include "../include/nsresolve.h"
+#include "../resolver/LDNSResolver.h"
+#include "../record/BaseRecord.h"
+#include "../record/ARecord.h"
+#include "../record/MXRecord.h"
+#include "../record/NSRecord.h"
+#include "../record/CNAMERecord.h"
+#include "../common/socket.h"
 
 static size_t record_size(const LResourceRecord *pRecord)
 {
