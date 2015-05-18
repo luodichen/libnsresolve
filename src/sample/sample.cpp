@@ -30,6 +30,17 @@
 #include <ctype.h>
 
 #ifdef _MSC_VER
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#endif
+
+#ifdef _MSC_VER
 #include "getopt.h"
 #else
 #include <unistd.h>
