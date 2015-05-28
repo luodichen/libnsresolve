@@ -25,6 +25,7 @@
 #include "../common/constants.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <string>
 #include <map>
 #include <ctype.h>
