@@ -80,7 +80,7 @@ class c_NSRMXRecord(Structure):
     ]
     
 class c_NSRTXTRecord(Structure):
-    _field_ = [
+    _fields_ = [
         ('nDataLength', c_ulong),
         ('strData', c_char_p),
     ]
