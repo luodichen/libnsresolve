@@ -210,8 +210,8 @@ def resolve(name, type, server, timeout):
      
     ret = NSRResult()
     ret.answers = make_result(pResult[0].pAnswers)
-    ret.pAuthoritys = make_result(pResult[0].pAuthoritys)
-    ret.pAdditionals = make_result(pResult[0].pAdditionals)
+    ret.authoritys = make_result(pResult[0].pAuthoritys)
+    ret.additionals = make_result(pResult[0].pAdditionals)
     
     clib.release(pResult)
     
