@@ -33,6 +33,7 @@
 #include "../record/NSRecord.h"
 #include "../record/MXRecord.h"
 #include "../record/CNAMERecord.h"
+#include "../record/TXTRecord.h"
 #include "LDomainNameParser.h"
 
 class LResourceRecord

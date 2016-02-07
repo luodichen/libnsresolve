@@ -28,6 +28,7 @@
 #include "../record/MXRecord.h"
 #include "../record/NSRecord.h"
 #include "../record/CNAMERecord.h"
+#include "../record/TXTRecord.h"
 #include "../common/socket.h"
 
 static size_t record_size(const LResourceRecord *pRecord)
@@ -107,6 +108,21 @@ static uint8_t *fill_res_data(uint8_t *pCur, const LResourceRecord *pResourceRec
         pCur += strDomainName.length();
 
        *(pCur++) = '\0';
+        break;
+    }
+    
+    case QTYPE::TXT: {
+        TXTRecord *pRecord = (TXTRecord *)pBaseRecord;
+        PNSRTXTRECORD pTarget = (PNSRTXTRECORD)pCur;
+        
+        pCur += sizeof(*pTarget);
+        
+        pTarget->nDataLength = pRecord->GetDataLength();
+        pTarget->pTxtData = (const char *)pCur;
+        std::string strData = pRecord->GetTXTString();
+        memcpy((void *)pCur, (void *)strData.c_str(), strData.length());
+        pCur += strData.length();
+        
         break;
     }
 
