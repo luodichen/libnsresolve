@@ -15,40 +15,32 @@
  */
 
 /*
- * ARecord.cpp
+ * TXTRecord.h
  *
- *  Created on: 2015年5月5日
+ *  Created on: Feb 5, 2016
  *      Author: luodichen
  */
 
-#include "ARecord.h"
-#include "../common/constants.h"
-#include "../common/socket.h"
-#include <string.h>
+#ifndef SRC_RECORD_TXTRECORD_H_
+#define SRC_RECORD_TXTRECORD_H_
 
-const uint16_t ARecord::TYPE = QTYPE::A;
+#include "BaseRecord.h"
+#include <string>
 
-ARecord::ARecord(size_t size)
-    : BaseRecord(size)
+class TXTRecord : public BaseRecord
 {
-    m_sType = TYPE;
-}
-
-ARecord::~ARecord()
-{
+public:
+    TXTRecord(size_t size);
+    virtual ~TXTRecord();
     
-}
-
-in_addr_t ARecord::GetIPAddress() const
-{
-    in_addr_t ret = 0;
-    memcpy((void *)&ret, GetRawData(), sizeof(ret));
-    (*(uint32_t *)&ret) = ntohl(*(uint32_t *)&ret);
+public:
+    std::string GetTXTString() const;
     
-    return ret;
-}
+public:
+    static const uint16_t TYPE;
+    
+private:
+    std::string m_strData;
+};
 
-size_t ARecord::GetDataLength() const
-{
-    return sizeof(in_addr_t);
-}
+#endif /* SRC_RECORD_TXTRECORD_H_ */

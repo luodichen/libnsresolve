@@ -116,6 +116,12 @@ typedef struct _NSRMXRECORD
     const char *szDomainName;
 } NSRMXRECORD, *PNSRMXRECORD;
 
+typedef struct _NSRTXTRECORD
+{
+    size_t nDataLength;
+    const char *pTxtData;
+} NSRTXTRECORD, *PNSRTXTRECORD;
+
 int resolve(const char *szName, uint16_t sType, in_addr_t server, NSRRESULT **pResult, time_t timeout);
 void release(NSRRESULT *pResult);
 

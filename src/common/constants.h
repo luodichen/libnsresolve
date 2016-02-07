@@ -33,6 +33,7 @@ namespace QTYPE
     static const uint16_t CNAME = 0x0005; // Alias (CNAME) record
     static const uint16_t PTR   = 0x000c; // Reverse-lookup (PTR) record
     static const uint16_t MX    = 0x000f; // Mail exchange (MX) record
+    static const uint16_t TXT   = 0x0010; // TXT record
     static const uint16_t SRV   = 0x0021; // Service (SRV) record
     static const uint16_t IXFR  = 0x00fb; // Incremental zone transfer (IXFR) record
     static const uint16_t AXFR  = 0x00fc; // Standard zone transfer (AXFR) record

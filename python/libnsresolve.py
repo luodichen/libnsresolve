@@ -33,6 +33,14 @@ TYPE_A = 0x0001
 TYPE_NS = 0x0002
 TYPE_CNAME = 0x0005
 TYPE_MX = 0x000f
+TYPE_TXT = 0x0010
+
+class NSRException(Exception):
+    def __init__(self, nErrorCode):
+        self.error_code = nErrorCode
+        
+    def __str__(self):
+        print 'NSRException: %d' % (self.error_code, )
 
 class c_DNSHeader(Structure):
     _fields_ = [
@@ -70,6 +78,12 @@ class c_NSRMXRecord(Structure):
         ("sPreference", c_uint16),
         ("szDomainName", c_char_p),
     ]
+    
+class c_NSRTXTRecord(Structure):
+    _fields_ = [
+        ('nDataLength', c_ulong),
+        ('strData', c_char_p),
+    ]
 
 class c_NSResRecord(Structure):
     _fields_ = [
@@ -89,30 +103,58 @@ class c_NSRResult(Structure):
         ("pAdditionals", POINTER(POINTER(c_NSResRecord))),
     ]
     
-class NSRResRecord(object):
-    type = 0
-    nclass = 0
-    ttl = 0
-    domain_name = ""
-    res = None
+class Record(object):
+    def __repr__(self):
+        return self.__dict__.__repr__()
     
-class NSRARecord(object):
-    address = 0
+    def __getitem__(self, key):
+        return self.__getattribute__(key)
+
+class IPv4Address(object):
+    def __init__(self, addr):
+        self.addr = addr
     
-class NSRNSRecord(object):
-    domain_name = ""
+    def __repr__(self):
+        return '%d.%d.%d.%d' % ((self.addr & 0xff000000) >> 24, 
+                                (self.addr & 0x00ff0000) >> 16, 
+                                (self.addr & 0x0000ff00) >> 8, 
+                                self.addr & 0x000000ff, )
+        
+class NSRResRecord(Record):
+    def __init__(self):
+        self.type = 0
+        self.nclass = 0
+        self.ttl = 0
+        self.domain_name = ''
+        self.res = None
     
-class NSRCNAMERecord(object):
-    domain_name = ""
+class NSRARecord(Record):
+    def __init__(self):
+        self.address = None
     
-class NSRMXRecord(object):
-    preference = ""
-    domain_name = ""
+class NSRNSRecord(Record):
+    def __init__(self):
+        self.domain_name = None
     
-class NSRResult(object):
-    answers = []
-    authoritys = []
-    additionals = []
+class NSRCNAMERecord(Record):
+    def __init__(self):
+        self.domain_name = None
+    
+class NSRMXRecord(Record):
+    def __init__(self):
+        self.preference = None
+        self.domain_name = None
+        
+class NSRTXTRecord(Record):
+    def __init__(self):
+        self.data_len = None
+        self.data = None
+    
+class NSRResult(Record):
+    def __init__(self):
+        self.answers = []
+        self.authoritys = []
+        self.additionals = []
     
 def make_result(record_point):
     index = 0
@@ -131,22 +173,27 @@ def make_result(record_point):
         res_data = None
         
         if TYPE_A == type:
-            res_data = NSRARecord
+            res_data = NSRARecord()
             c_res = cast(c_record.pResData, POINTER(c_NSRARecord))
-            res_data.address = c_res[0].address
+            res_data.address = IPv4Address(c_res[0].address)
         elif TYPE_CNAME == type:
-            res_data = NSRCNAMERecord
+            res_data = NSRCNAMERecord()
             c_res = cast(c_record.pResData, POINTER(c_NSRCNAMERecord))
             res_data.domain_name = c_res[0].szDomainName
         elif TYPE_MX == type:
-            res_data = NSRMXRecord
+            res_data = NSRMXRecord()
             c_res = cast(c_record.pResData, POINTER(c_NSRMXRecord))
             res_data.preference = c_res[0].sPreference
             res_data.domain_name = c_res[0].szDomainName
         elif TYPE_NS == type:
-            res_data = NSRNSRecord
+            res_data = NSRNSRecord()
             c_res = cast(c_record.pResData, POINTER(c_NSRNSRecord))
             res_data.domain_name = c_res[0].szDomainName
+        elif TYPE_TXT == type:
+            res_data = NSRTXTRecord()
+            c_res = cast(c_record.pResData, POINTER(c_NSRTXTRecord))
+            res_data.data_len = c_res[0].nDataLength
+            res_data.data = c_res[0].strData
         
         res_record.res = res_data
         ret.append(res_record)
@@ -156,14 +203,15 @@ def make_result(record_point):
     
 def resolve(name, type, server, timeout):
     pResult = POINTER(c_NSRResult)()
+    err_code = clib.resolve(name, type, server, pointer(pResult), timeout)
     
-    if clib.resolve(name, type, server, pointer(pResult), timeout) < 0:
-        return None
-    
+    if err_code < 0:
+         raise NSRException(err_code)
+     
     ret = NSRResult()
     ret.answers = make_result(pResult[0].pAnswers)
-    ret.pAuthoritys = make_result(pResult[0].pAuthoritys)
-    ret.pAdditionals = make_result(pResult[0].pAdditionals)
+    ret.authoritys = make_result(pResult[0].pAuthoritys)
+    ret.additionals = make_result(pResult[0].pAdditionals)
     
     clib.release(pResult)
     
