@@ -201,9 +201,16 @@ def make_result(record_point):
     
     return ret
     
-def resolve(name, type, server, timeout):
+def resolve(name, record_type, server, timeout):
     pResult = POINTER(c_NSRResult)()
-    err_code = clib.resolve(name, type, server, pointer(pResult), timeout)
+    
+    if type(server) is str:
+        address = server.split('.')
+        server = 0
+        for i in xrange(3, -1, -1):
+            server = (server << 8) | int(address[i])
+        
+    err_code = clib.resolve(name, record_type, server, pointer(pResult), timeout)
     
     if err_code < 0:
          raise NSRException(err_code)
